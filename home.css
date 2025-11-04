@@ -1,0 +1,154 @@
+/* === RESET & BASE === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eef2f7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /* selalu memenuhi tinggi layar */
+    padding: 20px;
+}
+
+/* === CONTAINER === */
+.container {
+    background: white;
+    text-align: center;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+
+    /* ubah dari fixed ke responsive */
+    width: 100%;
+    max-width: 700px;
+    /* batas maksimal di desktop */
+}
+
+.title {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 26px;
+    margin-bottom: 50px;
+}
+
+/* === ROLE BUTTONS === */
+.role-option {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    padding: 25px 20px;
+    background: #ffffff;
+    /* warna dalam putih */
+    color: #4d545c;
+    /* teks biru */
+    border: 2px solid #ccc;
+    /* garis tepi abu-abu */
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease,
+        background 0.3s ease;
+}
+
+.btn img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 12px;
+}
+
+.btn:hover {
+    background: #f8fbff;
+    /* sedikit biru lembut saat hover */
+    border-color: #4A90E2;
+    /* border berubah jadi biru */
+    color: #357ABD;
+    /* teks sedikit lebih gelap */
+    transform: translateY(-5px);
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+    /* efek glow biru lembut */
+}
+
+
+/* === RESPONSIVE DESIGN === */
+
+/* Tablet (<= 768px) */
+@media (max-width: 768px) {
+    .container {
+        padding: 30px;
+        max-width: 90%;
+    }
+
+    h1 {
+        font-size: 22px;
+        margin-bottom: 25px;
+    }
+
+    .role-option {
+        gap: 25px;
+    }
+
+    .btn {
+        width: 140px;
+        padding: 20px;
+    }
+
+    .btn img {
+        width: 55px;
+        height: 55px;
+    }
+}
+
+/* Mobile (<= 480px) */
+@media (max-width: 480px) {
+    body {
+        align-items: flex-start;
+        /* supaya bisa scroll jika layar kecil */
+    }
+
+    .container {
+        padding: 25px 20px;
+        margin-top: 50px;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    .role-option {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 280px;
+        padding: 18px;
+        font-size: 16px;
+    }
+
+    .btn img {
+        width: 50px;
+        height: 50px;
+    }
+}
