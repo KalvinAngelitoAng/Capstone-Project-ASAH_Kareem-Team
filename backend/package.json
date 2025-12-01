@@ -6,6 +6,7 @@
   "description": "Backend Node.js Project Capstone ASAH",
   "main": "src/index.js",
   "scripts": {
+    "build": "echo skip build",
     "start": "node src/index.js",
     "dev": "nodemon src/index.js"
   },
