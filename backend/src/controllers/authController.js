@@ -65,7 +65,15 @@ export const handleLogin = async (req, res) => {
       throw new Error("Password hash (user.pass) tidak ditemukan di database.");
     }
 
-    const isMatch = await bcrypt.compare(password, user.pass);
+    const normalizedHash = typeof user.pass === "string"
+      ? user.pass.replace(/^\$2y\$/,"$2a$")
+      : "";
+    let isMatch = false;
+    try {
+      isMatch = await bcrypt.compare(password, normalizedHash);
+    } catch (e) {
+      return res.status(401).json({ message: "Email, password, atau role salah." });
+    }
 
     if (!isMatch) {
       return res

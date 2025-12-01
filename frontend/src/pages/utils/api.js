@@ -15,7 +15,7 @@ export async function postAuth(endpoint, data) {
   try {
     payload = await res.json();
   } catch (e) {
-    // Abaikan jika tidak ada JSON body
+    
   }
 
   if (!res.ok) {
