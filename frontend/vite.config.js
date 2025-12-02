@@ -14,7 +14,7 @@ export default defineConfig({
         ),
         shippingHome: resolve(
           __dirname,
-          "src/pages/shipping-planner/home_shipping_page.html"
+          "src/pages/shipping-planner/home/home_shipping_page.html"
         ),
         crew: resolve(
           __dirname,

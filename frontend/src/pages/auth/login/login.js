@@ -16,19 +16,18 @@ const updatePageTitle = () => {
       roleParam === "shipper_planner"
         ? "Shipper Planner"
         : roleParam === "mining_planner"
-        ? "Mining Planner"
-        : "Planner";
+          ? "Mining Planner"
+          : "Planner";
     const roleIcon =
       roleParam === "shipper_planner"
         ? "/assets/Port.png"
         : roleParam === "mining_planner"
-        ? "/assets/Oil Pump.png"
-        : "";
-    pageTitle.innerHTML = `${
-      roleIcon
+          ? "/assets/Oil Pump.png"
+          : "";
+    pageTitle.innerHTML = `${roleIcon
         ? `<img class="title-icon" src="${roleIcon}" alt="${roleTitle} icon" />`
         : ""
-    }<span>Login ${roleTitle}</span>`;
+      }<span>Login ${roleTitle}</span>`;
   }
 };
 
@@ -86,7 +85,7 @@ if (loginForm) {
         // Redirect berdasarkan role
         let redirectPath = "/index.html";
         if (roleId === 1) {
-          redirectPath = "/src/pages/shipping-planner/home_shipping_page.html";
+          redirectPath = "/src/pages/shipping-planner/home/home_shipping_page.html";
         } else if (roleId === 2) {
           redirectPath = "/src/pages/mine-planner/home/home_planner_page.html";
         }
