@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mining Operations Dashboard</title>
-    <script type="module" src="../../../style/ship-planner/style.css"></script>
+    <link rel="stylesheet" href="../../../../src/style/ship-planner/style.css">
 </head>
 
 <body>
@@ -13,10 +13,8 @@
     <div class="dashboard-grid">
 
         <aside class="sidebar">
-
             <div class="profile-pic">
-                <img src="../../../../public/assets/mine-planner-image/mine-planner-profile.png" alt="profile"
-                    class="menu-icon">
+                <img src="../../../../public/assets/mine-planner-image/mine-planner-profile.png" alt="profile">
             </div>
 
             <h3 class="profile-name">Nino</h3>
@@ -30,7 +28,7 @@
             </button>
 
             <div class="logout-container">
-                <button class="btn-logout" href="" id="logout-btn">
+                <button class="btn-logout" id="logout-btn">
                     Keluar (Logout)
                 </button>
             </div>
@@ -42,7 +40,6 @@
             </h1>
 
             <div class="menu-grid">
-
                 <a href="../ai_agent/ai_agent.html" class="menu-card">
                     <img src="../../../../public/assets/ship-planner-image/sp2.jpg" alt="AI Icon" class="menu-icon">
                     <p class="menu-label">AI Optimization</p>
@@ -58,15 +55,45 @@
                     <p class="menu-label">Shipping Vessel</p>
                 </a>
             </div>
-
         </main>
 
-        <div class="floating-chat">
-            Chatbot AI
+        <!-- Floating Chat Button -->
+        <div class="floating-chat" id="chatToggle">
+            💬 Chatbot AI
+        </div>
+
+        <!-- Chatbot Popup -->
+        <div class="chatbot-popup" id="chatbotPopup">
+            <div class="chatbot-header">
+                <h3>
+                    <span class="status-dot" id="statusDot"></span>
+                    AI Assistant
+                </h3>
+                <button class="close-btn" id="closeChat">×</button>
+            </div>
+
+            <div class="config-notice" id="configNotice">
+                ⚠️ Mohon konfigurasi N8N Webhook URL terlebih dahulu
+            </div>
+
+            <div class="chatbot-messages" id="chatMessages">
+                <div class="message bot">
+                    <div class="message-avatar">AI</div>
+                    <div class="message-content">
+                        Halo! Saya AI Assistant untuk Shipping Planner. Ada yang bisa saya bantu hari ini?
+                    </div>
+                </div>
+            </div>
+
+            <div class="chatbot-input">
+                <input type="text" id="messageInput" placeholder="Ketik pesan Anda...">
+                <button class="send-btn" id="sendBtn">Kirim</button>
+            </div>
         </div>
 
     </div>
 
+    <script src="minichatbox.js"></script>
 </body>
 
 </html>
