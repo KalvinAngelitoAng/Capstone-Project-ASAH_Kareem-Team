@@ -56,7 +56,8 @@ export const getWeatherCards = async (req, res) => {
 
 export const getBlendingPlans = async (req, res) => {
   try {
-    const week = req.query.week; const year = req.query.year;
+    const week = req.query.week;
+    const year = req.query.year;
     const rows = await getBlendingPlansFiltered(week, year);
     res.json({ message: "GET blending plans success", data: rows });
   } catch (error) {
@@ -72,4 +73,3 @@ export const getOptimizationLogs = async (req, res) => {
     res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
-

@@ -1,4 +1,5 @@
-const API_SUMMARY = "http://localhost:3000/ai_summary/ai_summary";
+import { BASE_URL } from "../../../../pages/utils/config.js";
+const API_SUMMARY = `${BASE_URL}/ai_summary/ai_summary`;
 
 async function loadSummary() {
     const box = document.getElementById("summary-container");

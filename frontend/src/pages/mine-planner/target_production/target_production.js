@@ -1,8 +1,9 @@
 import "../../../style/mine-planner/production.css";
 import { handleLogout } from "../../utils/logout.js";
+import { BASE_URL } from "../../utils/config.js";
 
-// Endpoint API Blending Plan
-const API_PLAN_BASE = "http://localhost:3000/blending-plans";
+// Endpoint API Blending Plan (gunakan BASE_URL agar bekerja di deploy)
+const API_PLAN_BASE = `${BASE_URL}/shipping-dashboard/blending-plans`;
 
 async function fetchPlanData() {
   try {
@@ -21,7 +22,7 @@ async function fetchPlanData() {
     console.error("Fetch Blending Plan Error:", error);
     document.getElementById(
       "production-table-body"
-    ).innerHTML = `<tr><td colspan="8" class="py-4 text-center text-red-600">GAGAL: ${error.message} (Pastikan Backend berjalan di port 3000 dan endpoint /blending-plans tersedia!)</td></tr>`;
+    ).innerHTML = `<tr><td colspan="8" class="py-4 text-center text-red-600">GAGAL: ${error.message} (Periksa BASE_URL dan endpoint /shipping-dashboard/blending-plans di backend)</td></tr>`;
     return [];
   }
 }
@@ -35,7 +36,7 @@ async function deletePlanApi(id) {
       const errorBody = await response.json().catch(() => ({}));
       throw new Error(
         errorBody.message ||
-        `Gagal menghapus Rencana ID ${id}. Status: ${response.status}`
+          `Gagal menghapus Rencana ID ${id}. Status: ${response.status}`
       );
     }
     return true;
@@ -73,21 +74,23 @@ async function renderProductionTable() {
             <td class="py-2 px-4 border-b">${plan.plan_week}</td>
             <td class="py-2 px-4 border-b">${plan.plan_year}</td>
             <td class="py-2 px-4 border-b">${plan.target_tonnage_weekly.toLocaleString(
-      "id-ID"
-    )}</td>
+              "id-ID"
+            )}</td>
             <td class="py-2 px-4 border-b">${plan.target_calori} kcal/kg</td>
             <td class="py-2 px-4 border-b">${plan.target_ash_max} %</td>
             <td class="py-2 px-4 border-b">${getApprovalBadge(
-      plan.is_approved_mine
-    )}</td>
+              plan.is_approved_mine
+            )}</td>
             <td class="py-2 px-4 border-b">${getApprovalBadge(
-      plan.is_approved_shipping
-    )}</td>
+              plan.is_approved_shipping
+            )}</td>
             <td class="py-2 px-4 border-b text-right action-buttons">
-                <button onclick="window.handleEdit(${plan.id
-      })" class="text-blue-600 hover:text-blue-800 text-sm btn-edit">Edit</button>
-                <button onclick="window.handleDelete(${plan.id
-      })" class="text-red-600 hover:text-red-800 text-sm btn-hapus">Hapus</button>
+                <button onclick="window.handleEdit(${
+                  plan.id
+                })" class="text-blue-600 hover:text-blue-800 text-sm btn-edit">Edit</button>
+                <button onclick="window.handleDelete(${
+                  plan.id
+                })" class="text-red-600 hover:text-red-800 text-sm btn-hapus">Hapus</button>
             </td>
         `;
     tableBody.appendChild(row);
@@ -107,6 +110,18 @@ window.handleDelete = async (id) => {
       renderProductionTable();
     }
   }
+};
+
+// Attach handler untuk tombol tambah rencana baru
+window.handleAddNew = () => {
+  const btn = document.getElementById("add-new-btn");
+  if (!btn) return;
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert(
+      "Fitur tambah rencana akan segera tersedia. Saat ini halaman hanya menampilkan data dari server."
+    );
+  });
 };
 
 // Inisialisasi setelah DOM dimuat

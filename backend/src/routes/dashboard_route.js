@@ -22,4 +22,3 @@ router.get("/weekly-schedule", getWeeklySchedulePage);
 router.get("/weather-today", getWeatherInfo);
 
 export default router;
-

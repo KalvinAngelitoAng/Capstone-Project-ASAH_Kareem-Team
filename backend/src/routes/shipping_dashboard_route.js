@@ -18,4 +18,3 @@ router.get("/blending-plans", getBlendingPlans);
 router.get("/optimization-logs", getOptimizationLogs);
 
 export default router;
-

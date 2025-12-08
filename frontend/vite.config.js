@@ -16,6 +16,18 @@ export default defineConfig({
           __dirname,
           "src/pages/shipping-planner/home/home_shipping_page.html"
         ),
+        shippingSchedule: resolve(
+          __dirname,
+          "src/pages/shipping-planner/shipping_schedule/shipping_schedule.html"
+        ),
+        shippingVessel: resolve(
+          __dirname,
+          "src/pages/shipping-planner/shipping_vessel/shipping_vessel.html"
+        ),
+        aiAgent: resolve(
+          __dirname,
+          "src/pages/shipping-planner/ai_agent/ai_agent.html"
+        ),
         crew: resolve(
           __dirname,
           "src/pages/mine-planner/crew/crew_management_page.html"
@@ -28,6 +40,10 @@ export default defineConfig({
         targetProduction: resolve(
           __dirname,
           "src/pages/mine-planner/target_production/target_production.html"
+        ),
+        minePlan: resolve(
+          __dirname,
+          "src/pages/mine-planner/target_production/mine_plan/mining_plan.html"
         ),
       },
     },
