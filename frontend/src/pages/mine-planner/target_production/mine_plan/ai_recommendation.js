@@ -333,6 +333,9 @@ async function submitRejection() {
   }
 }
 
+window.triggerRecommendation = triggerRecommendation;
+window.refreshPage = refreshPage;
+
 document
   .getElementById("submit-rejection-btn")
   .addEventListener("click", submitRejection);
