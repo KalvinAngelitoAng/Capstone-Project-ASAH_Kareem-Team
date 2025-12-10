@@ -49,6 +49,18 @@ export default defineConfig({
           __dirname,
           "src/pages/mine-planner/target_production/mine_plan/mining_plan.html"
         ),
+        aiAgentMining: resolve(
+          __dirname,
+          "src/pages/mine-planner/ai_agent/ai_agent_mining.html"
+        ),
+        aiAgentShipping: resolve(
+          __dirname,
+          "src/pages/shipping-planner/ai_agent/ai_agent_shipping.html"
+        ),
+        aiMiningOptimization: resolve(
+          __dirname,
+          "src/pages/mine-planner/ai_optimization/ai_mining_optimization.html"
+        ),
       },
     },
   },

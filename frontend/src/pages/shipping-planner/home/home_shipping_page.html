@@ -306,10 +306,17 @@
     <script type="module" src="../../utils/logout.js"></script>
     <script>
       document
+        .getElementById("chatToggle")
+        ?.addEventListener("click", function (e) {
+          e.preventDefault();
+          window.location.href = "../ai_agent/ai_agent_shipping.html";
+        });
+
+      document
         .getElementById("openChatShip")
         ?.addEventListener("click", function (e) {
           e.preventDefault();
-          document.getElementById("chatToggle")?.click();
+          window.location.href = "../ai_agent/ai_agent_shipping.html";
         });
     </script>
   </body>

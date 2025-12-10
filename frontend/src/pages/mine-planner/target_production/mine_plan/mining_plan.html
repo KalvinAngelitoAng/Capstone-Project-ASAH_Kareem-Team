@@ -121,7 +121,20 @@
     <main class="main-content">
       <section id="optimize-plan-section" class="optimize-plan-section">
         <!-- Ai Summary -->
-        <h1 class="fw-bold mb-4">📄 AI Summary Result</h1>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h1 class="fw-bold mb-0">📄 AI Summary Result</h1>
+          <div class="d-flex align-items-center">
+            <button id="add-new-btn" class="btn btn-primary">
+              + Tambah Rencana Baru
+            </button>
+            <button
+              id="reload-summary-btn"
+              class="btn btn-outline-secondary ms-2"
+            >
+              Reload Summary
+            </button>
+          </div>
+        </div>
         <div id="summary-container" class="summary-box">
           <p>Memuat summary...</p>
         </div>
@@ -160,9 +173,7 @@
 
         <!-- Status Penolakan Shipping -->
         <div class="mt-4">
-          <h2 class="fw-bold" style="font-size: 16px">
-            📨 Status Scenario
-          </h2>
+          <h2 class="fw-bold" style="font-size: 16px">📨 Status Scenario</h2>
           <div class="card p-3">
             <table class="table table-sm" id="rejectionStatusTable">
               <thead>
@@ -247,7 +258,97 @@
       </section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="ai_summary.js"></script>
+    <script>
+      const N8N_WEBHOOK =
+        "https://pojer26018.app.n8n.cloud/webhook-test/summary";
+      document
+        .getElementById("add-new-btn")
+        ?.addEventListener("click", async () => {
+          Swal.fire({
+            title: "⏳ AI Sedang Memproses",
+            text: "Mohon tunggu...",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          try {
+            await fetch(N8N_WEBHOOK, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ update_summary: false }),
+            });
+            const start = Date.now();
+            const checkUrl =
+              (window.__BASE_URL || "http://localhost:3000") +
+              "/ai_summary/ai_summary";
+            let done = false;
+            while (!done) {
+              try {
+                const r = await fetch(checkUrl, { cache: "no-store" });
+                if (r.ok) {
+                  const j = await r.json();
+                  if (j && j.data) {
+                    done = true;
+                    break;
+                  }
+                }
+              } catch {}
+              await new Promise((resolve) => setTimeout(resolve, 2000));
+              if (Date.now() - start > 300000) break;
+            }
+            Swal.close();
+            location.reload();
+          } catch (err) {
+            Swal.fire("Gagal!", "Tidak dapat memproses AI Summary", "error");
+          }
+        });
+
+      document
+        .getElementById("reload-summary-btn")
+        ?.addEventListener("click", async () => {
+          Swal.fire({
+            title: "⏳ Memuat Ulang Summary",
+            text: "Mohon tunggu...",
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+          try {
+            await fetch(N8N_WEBHOOK, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ update_summary: true }),
+            });
+            const start = Date.now();
+            const checkUrl =
+              (window.__BASE_URL || "http://localhost:3000") +
+              "/ai_summary/ai_summary";
+            let done = false;
+            while (!done) {
+              try {
+                const r = await fetch(checkUrl, { cache: "no-store" });
+                if (r.ok) {
+                  const j = await r.json();
+                  if (j && j.data) {
+                    done = true;
+                    break;
+                  }
+                }
+              } catch {}
+              await new Promise((resolve) => setTimeout(resolve, 2000));
+              if (Date.now() - start > 300000) break;
+            }
+            Swal.close();
+            location.reload();
+          } catch (err) {
+            Swal.fire("Gagal!", "Tidak dapat memuat ulang AI Summary", "error");
+          }
+        });
+    </script>
     <script type="module" src="ai_recommendation.js"></script>
   </body>
 </html>
