@@ -58,13 +58,7 @@ export function checkAuthenticatedRoute(page) {
   const isLogin = !!getAccessToken();
 
   if (!isLogin) {
-    const p = window.location.pathname;
-    const q = p.includes("/shipping-planner/")
-      ? "?role=shipper_planner"
-      : p.includes("/mine-planner/")
-      ? "?role=mining_planner"
-      : "";
-    window.location.href = "/src/pages/auth/login/login.html" + q;
+    window.location.href = "/src/pages/auth/login/login.html";
     return null;
   }
 
@@ -105,13 +99,7 @@ export function ensureRoleAccess(required) {
   const requiredId = requiredMap[required];
   const token = getAccessToken();
   if (!token) {
-    const p = window.location.pathname;
-    const q = p.includes("/shipping-planner/")
-      ? "?role=shipper_planner"
-      : p.includes("/mine-planner/")
-      ? "?role=mining_planner"
-      : "";
-    window.location.href = "/src/pages/auth/login/login.html" + q;
+    window.location.href = "/src/pages/auth/login/login.html";
     return null;
   }
   const roleId = getUserRoleId();

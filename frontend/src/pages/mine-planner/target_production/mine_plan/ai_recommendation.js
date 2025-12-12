@@ -59,7 +59,7 @@ async function triggerRecommendation() {
             break;
           }
         }
-      } catch {}
+      } catch { }
       await sleep(2000);
       if (Date.now() - start > 300000) {
         document.getElementById("modal-title").innerText = "Timeout";
@@ -106,47 +106,82 @@ async function loadRecommendation() {
       return;
     }
 
+    // Hanya bagian scenarioCards yang dimodifikasi, sisanya tetap sama seperti kode original
+
     const scenarioCards = scenarios
       .map(
         (scn) => `
-                <div class="col-md-4">
-                    <div class="card mb-3 shadow-sm h-100 scenario-card" data-scenario-id="${
-                      scn.id
-                    }">
-                        <div class="card-body">
-                            <h4>
-                                Scenario ${scn.id}: ${scn.name}
-                                ${
-                                  scn.ai_recommended
-                                    ? '<span class="badge bg-warning text-dark ms-2">AI Recommended</span>'
-                                    : ""
-                                }
-                            </h4>
-                            <p><strong>Focus:</strong> ${scn.focus}</p>
-                            <p><strong>Feasibility:</strong> ${
-                              scn.feasibility_score
-                            }</p>
-                            <p><strong>Strategy Summary:</strong> ${
-                              scn.strategy_summary
-                            }</p>
+      <div class="col-md-4">
+        <div class="card mb-3 shadow-sm h-100 scenario-card" data-scenario-id="${scn.id}">
+          <div class="card-body">
+            <h4>
+              Scenario ${scn.id}: ${scn.name}
+              ${scn.ai_recommended
+            ? '<span class="badge bg-warning text-dark ms-2">AI Recommended</span>'
+            : ""
+          }
+            </h4>
+            <p><strong>Focus:</strong> ${scn.focus}</p>
+            <p><strong>Feasibility:</strong> ${scn.feasibility_score}</p>
+            <p><strong>Strategy Summary:</strong> ${scn.strategy_summary}</p>
 
-                            <h5>Kelebihan:</h5>
-                            <ul>${scn.key_pros
-                              .map((p) => `<li>${p}</li>`)
-                              .join("")}</ul>
+            <h5>Streng:</h5>
+            <ul>${scn.key_pros.map((p) => `<li>${p}</li>`).join("")}</ul>
 
-                            <h5>Kekurangan:</h5>
-                            <ul>${scn.key_cons
-                              .map((c) => `<li>${c}</li>`)
-                              .join("")}</ul>
+            <h5>Weakness:</h5>
+            <ul>${scn.key_cons.map((c) => `<li>${c}</li>`).join("")}</ul>
 
-                            <p><strong>Estimated Production:</strong> ${
-                              scn.estimated_production_tons
-                            } tons</p>
-                        </div>
-                    </div>
+            <p><strong>Estimated Production:</strong> ${scn.estimated_production_tons} tons</p>
+            
+            <!-- INFORMASI TAMBAHAN YANG DITAMBAHKAN -->
+            <p><strong>Comparison to User Draft:</strong> ${scn.comparison_to_user_draft}</p>
+            
+            <div class="alert alert-info mt-2">
+              <strong>Financial Implication:</strong><br>
+              <small>${scn.financial_implication}</small>
+            </div>
+
+            ${scn.role_specific_plan ? `
+              <hr>
+              <h5 class="mt-3">Role Specific Plans:</h5>
+              
+              ${scn.role_specific_plan.mine_planner ? `
+                <div class="mb-3">
+                  <h6 class="text-primary">⛏️ Mine Planner:</h6>
+                  <p class="mb-1"><strong>Main Objective:</strong><br>
+                    <small>${scn.role_specific_plan.mine_planner.main_objective}</small>
+                  </p>
+                  <p class="mb-1"><strong>Pit Focus:</strong><br>
+                    <small>${scn.role_specific_plan.mine_planner.pit_focus}</small>
+                  </p>
+                  <p class="mb-1"><strong>Fleet Instruction:</strong><br>
+                    <small>${scn.role_specific_plan.mine_planner.fleet_instruction}</small>
+                  </p>
                 </div>
-            `
+              ` : ''}
+              
+              ${scn.role_specific_plan.shipping_planner ? `
+                <div class="mb-3">
+                  <h6 class="text-success">🚢 Shipping Planner:</h6>
+                  <p class="mb-1"><strong>Main Objective:</strong><br>
+                    <small>${scn.role_specific_plan.shipping_planner.main_objective}</small>
+                  </p>
+                  <p class="mb-1"><strong>Berthing Instruction:</strong><br>
+                    <small>${scn.role_specific_plan.shipping_planner.berthing_instruction}</small>
+                  </p>
+                  ${scn.role_specific_plan.shipping_planner.risk_warning ? `
+                    <div class="alert alert-warning mt-2 mb-0">
+                      <strong>⚠️ Risk Warning:</strong><br>
+                      <small>${scn.role_specific_plan.shipping_planner.risk_warning}</small>
+                    </div>
+                  ` : ''}
+                </div>
+              ` : ''}
+            ` : ''}
+          </div>
+        </div>
+      </div>
+    `
       )
       .join("");
 
@@ -158,17 +193,15 @@ async function loadRecommendation() {
                         <h3 class="text-primary">🔍 Final AI Recommendation Summary</h3>
                         <p><strong>Explanation:</strong></p>
                         <p>${finalReasoning.explanation}</p>
-                        <p><strong>Trigger Factor:</strong> ${
-                          finalReasoning.trigger_factor
-                        }</p>
-                        <p><strong>Selected Scenario:</strong> ${
-                          finalReasoning.selected_scenario
-                        }</p>
+                        <p><strong>Trigger Factor:</strong> ${finalReasoning.trigger_factor
+      }</p>
+                        <p><strong>Selected Scenario:</strong> ${finalReasoning.selected_scenario
+      }</p>
 
                         <h5>Immediate Action Items:</h5>
                         <ul>${finalReasoning.immediate_action_items
-                          .map((i) => `<li>${i}</li>`)
-                          .join("")}</ul>
+        .map((i) => `<li>${i}</li>`)
+        .join("")}</ul>
                     </div>
                 </div>
             </div>
@@ -176,7 +209,7 @@ async function loadRecommendation() {
       : "";
 
     container.innerHTML = `
-            <h2>📊 AI Optimization Scenarios</h2>
+            <h2>AI Optimization Scenarios</h2>
             <div class="row">${scenarioCards}</div>
             ${finalReasonCard}
         `;
@@ -218,7 +251,7 @@ async function loadRejectionStatus() {
           return Number.isNaN(n) ? null : n;
         }
         if (raw && typeof raw === "object") return raw.id ?? null;
-      } catch {}
+      } catch { }
       return null;
     };
     const getScenarioName = (row) => {
@@ -251,9 +284,8 @@ async function loadRejectionStatus() {
       const step = fmtStep(r);
       const scenario = getScenarioName(r);
       const alasan = (r.rejection_note ?? "").toString();
-      return `<tr><td>${waktu}</td><td>${step}</td><td>${scenario}</td><td>${
-        alasan || ""
-      }</td></tr>`;
+      return `<tr><td>${waktu}</td><td>${step}</td><td>${scenario}</td><td>${alasan || ""
+        }</td></tr>`;
     };
     tbody.innerHTML =
       rows.map(toRow).join("") ||
@@ -288,9 +320,7 @@ loadRejectionStatus();
 window.triggerRecommendation = triggerRecommendation;
 window.refreshPage = refreshPage;
 
-// =======================
 // Scenario selection
-// =======================
 let selectedScenarioId = null;
 
 function enableScenarioSelection() {
@@ -310,8 +340,6 @@ function enableScenarioSelection() {
       const badge = document.createElement("span");
       badge.classList.add("badge", "bg-success", "selected-badge");
       badge.style.position = "absolute";
-      badge.style.top = "10px";
-      badge.style.right = "10px";
       badge.innerText = "Selected ✓";
 
       card.appendChild(badge);
@@ -323,9 +351,7 @@ function enableScenarioSelection() {
   });
 }
 
-// =======================
-// SEND SELECTED SCENARIO
-// =======================
+// Send Selected Scenario
 async function submitSelectedScenario() {
   if (!selectedScenarioId) return alert("Pilih salah satu scenario dulu!");
 
@@ -369,7 +395,7 @@ async function submitSelectedScenario() {
             break;
           }
         }
-      } catch {}
+      } catch { }
       await sleep(2000);
       if (Date.now() - start > 300000) {
         document.getElementById("modal-title").innerText = "Timeout";
@@ -393,9 +419,7 @@ document
   .getElementById("submit-selected-btn")
   .addEventListener("click", submitSelectedScenario);
 
-// =======================
-// REJECTION LOGIC
-// =======================
+// Rejection Logic
 document.getElementById("reject-btn").addEventListener("click", () => {
   const modal = new bootstrap.Modal(document.getElementById("rejectionModal"));
   modal.show();
@@ -411,7 +435,7 @@ async function submitRejection() {
   document.getElementById("modal-title").innerText = "Processing Rejection...";
   document.getElementById("modal-body").innerHTML = `
         <div class="spinner-border text-danger"></div>
-        <p class="mt-3">Mengirim alasan penolakan ke AI Agent...</p>
+        <p class="">Mengirim alasan penolakan ke AI Agent...</p>
     `;
   document.getElementById("modal-ok-btn").classList.add("d-none");
 
@@ -447,7 +471,7 @@ async function submitRejection() {
             break;
           }
         }
-      } catch {}
+      } catch { }
       await sleep(2000);
       if (Date.now() - start > 300000) {
         document.getElementById("modal-title").innerText = "Timeout";

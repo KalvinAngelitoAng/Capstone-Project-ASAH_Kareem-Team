@@ -1,24 +1,24 @@
-import { 
-    getAllEquipments, 
-    getEquipmentById,
-    createNewEquipment as modelCreateEquipment, 
-    updateEquipment as modelUpdateEquipment, 
-    deleteEquipment as modelDeleteEquipment
+import {
+  getAllEquipments,
+  getEquipmentById,
+  createNewEquipment as modelCreateEquipment,
+  updateEquipment as modelUpdateEquipment,
+  deleteEquipment as modelDeleteEquipment,
 } from "../models/equipment_model.js";
 
-export const getAllEquipment = async(req, res) => {
-    try {
-        const [data] = await getAllEquipments();
-        res.json({
-            message: 'GET ALL Equipments success',
-            data
-        })
-    } catch (error) {
-        res.status(500).json({
-          message: "Server Error",
-          serverMessage: error,
-        })
-    }
+export const getAllEquipment = async (req, res) => {
+  try {
+    const [data] = await getAllEquipments();
+    res.json({
+      message: "GET ALL Equipments success",
+      data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      serverMessage: error.message,
+    });
+  }
 };
 
 export const getEquipmentDetail = async (req, res) => {
@@ -46,64 +46,67 @@ export const getEquipmentDetail = async (req, res) => {
   }
 };
 
-export const createNewEquipment = async(req, res) => {
-    const { body } = req;
+export const createNewEquipment = async (req, res) => {
+  const { body } = req;
 
-    if ( !body.unit_id || !body.type || !body.location || !body.status || !body.is_available || !body.productivity_rate ) {
-      return res.status(400).json({
-        message: "Failed data requested",
-        data: null,
-      });
-    }
+  if (!body.unit_code || !body.equipment_type) {
+    return res.status(400).json({
+      message:
+        "Failed data requested. unit_code and equipment_type are required",
+      data: null,
+    });
+  }
 
-    try {
-        await modelCreateEquipment(body);
-        res.status(201).json({
-            message: 'CREATE new equipment is success',
-            data: body
-        })
-    } catch (error) {
-        res.status(500).json({
-            message: "Server error",
-            serverMessage: error,
-        });
-    }
+  try {
+    await modelCreateEquipment(body);
+    res.status(201).json({
+      message: "CREATE new equipment is success",
+      data: body,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      serverMessage: error.message,
+    });
+  }
 };
 
-export const updateEquipment = async(req, res) => {
-    const { idEquipment } = req.params;
-    const { body } = req;
+export const updateEquipment = async (req, res) => {
+  const { idEquipment } = req.params;
+  const { body } = req;
 
-    try {
-        await modelUpdateEquipment(body, idEquipment);
-        res.status(200).json({
-            message: "UPDATE equipment is success",
-            data:{
-                id: idEquipment,
-                ...body
-            }
-        })
-    } catch (error) {
-        res.status(500).json({
-            message: 'Server Error',
-            serverMessage: error.message
-        })
-    }
-}
+  console.log(body);
 
-export const deleteEquipment = async(req, res) => {
-    const {idEquipment} = req.params;
+  try {
+    await modelUpdateEquipment(body, idEquipment);
+    res.status(200).json({
+      message: "UPDATE equipment is success",
+      data: {
+        id: idEquipment,
+        ...body,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server Error",
+      serverMessage: error.message,
+    });
+  }
+};
 
-    try {
-        await modelDeleteEquipment(idEquipment);
-        res.status(200).json({
-            message: 'DELETE equipment is success',
-            data: null
-        })
-    } catch (error) {
-        res.status(500).json({
-            message: "Server error",
-            serverMessage: error
-        })
-    }
-}
+export const deleteEquipment = async (req, res) => {
+  const { idEquipment } = req.params;
+
+  try {
+    await modelDeleteEquipment(idEquipment);
+    res.status(200).json({
+      message: "DELETE equipment is success",
+      data: null,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Server error",
+      serverMessage: error.message,
+    });
+  }
+};

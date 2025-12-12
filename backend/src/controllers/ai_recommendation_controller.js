@@ -13,8 +13,19 @@ export const getRecommendation = async (req, res) => {
 
         const raw = rows[0].scenarios_json;
 
-        // Jika sudah object → gunakan langsung
-        const parsed = typeof raw === "string" ? JSON.parse(raw) : raw;
+        // FIX: aman terhadap null atau string kosong
+        let parsed = {};
+
+        if (typeof raw === "string" && raw.trim() !== "") {
+            try {
+                parsed = JSON.parse(raw);
+            } catch (err) {
+                console.error("JSON parse error:", err);
+                parsed = {};
+            }
+        } else if (typeof raw === "object" && raw !== null) {
+            parsed = raw;
+        }
 
         return res.json({
             message: "Recommendation retrieved successfully",

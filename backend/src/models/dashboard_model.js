@@ -1,8 +1,9 @@
 import { pool as dbPool } from "../config/database.js";
 
 export const getDailyTonnageToday = async () => {
+  // Use the latest available date if no data for today
   const [rows] = await dbPool.query(
-    "SELECT COALESCE(SUM(daily_tonnage),0) AS value FROM daily_reports WHERE date = CURDATE()"
+    "SELECT COALESCE(SUM(daily_tonnage),0) AS value FROM daily_reports WHERE date = (SELECT MAX(date) FROM daily_reports)"
   );
   return rows?.[0]?.value ?? 0;
 };
@@ -11,13 +12,19 @@ export const getEquipmentReadyPercentToday = async () => {
   const [[{ total }]] = await dbPool.query(
     "SELECT COUNT(*) AS total FROM heavy_equipment"
   );
+  // Use latest available date for equipment status
+  const [[{ latestDate }]] = await dbPool.query(
+    "SELECT COALESCE(MAX(date), CURDATE()) AS latestDate FROM daily_equipment_status"
+  );
   const [[{ rowsToday }]] = await dbPool.query(
-    "SELECT COUNT(*) AS rowsToday FROM daily_equipment_status WHERE date = CURDATE()"
+    "SELECT COUNT(*) AS rowsToday FROM daily_equipment_status WHERE date = ?",
+    [latestDate]
   );
   let ready = 0;
   if (rowsToday) {
     const [[r]] = await dbPool.query(
-      "SELECT COUNT(*) AS ready FROM daily_equipment_status WHERE date = CURDATE() AND equipment_status = 'ready'"
+      "SELECT COUNT(*) AS ready FROM daily_equipment_status WHERE date = ? AND equipment_status = 'ready'",
+      [latestDate]
     );
     ready = r.ready || 0;
   } else {
@@ -34,13 +41,19 @@ export const getEmployeeAttendancePercentToday = async () => {
   const [[{ total }]] = await dbPool.query(
     "SELECT COUNT(*) AS total FROM employees"
   );
+  // Use latest available date for attendance
+  const [[{ latestDate }]] = await dbPool.query(
+    "SELECT COALESCE(MAX(date), CURDATE()) AS latestDate FROM daily_attendance"
+  );
   const [[{ present }]] = await dbPool.query(
-    "SELECT COUNT(*) AS present FROM daily_attendance WHERE date = CURDATE() AND attendance_status = 'present'"
+    "SELECT COUNT(*) AS present FROM daily_attendance WHERE date = ? AND attendance_status = 'present'",
+    [latestDate]
   );
   let effectivePresent = present;
   if (!present) {
     const [[{ scheduled }]] = await dbPool.query(
-      "SELECT COUNT(*) AS scheduled FROM weekly_schedule WHERE date = CURDATE() AND employee_id IS NOT NULL"
+      "SELECT COUNT(*) AS scheduled FROM weekly_schedule WHERE date = ? AND employee_id IS NOT NULL",
+      [latestDate]
     );
     effectivePresent = scheduled || 0;
   }
@@ -113,8 +126,9 @@ export const getEquipmentStatusToday = async () => {
     );
     return { date: null, rows: mapped };
   }
+  // Use latest available date for equipment status
   const [[{ latest }]] = await dbPool.query(
-    "SELECT COALESCE((SELECT MAX(date) FROM daily_equipment_status WHERE date <= CURDATE()), CURDATE()) AS latest"
+    "SELECT MAX(date) AS latest FROM daily_equipment_status"
   );
   const [rows] = await dbPool.query(
     "SELECT equipment_status, COUNT(*) AS count FROM daily_equipment_status WHERE date = ? GROUP BY equipment_status",
@@ -177,10 +191,7 @@ export const getWeeklySchedule = async (page = 1, pageSize = 20) => {
 };
 
 export const getWeatherToday = async () => {
-  const [rows] = await dbPool.query(
-    "SELECT * FROM weather WHERE date = CURDATE()"
-  );
-  if (rows.length > 0) return rows[0];
+  // Use latest available weather data
   const [[latest]] = await dbPool.query(
     "SELECT * FROM weather ORDER BY date DESC LIMIT 1"
   );

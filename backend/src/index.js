@@ -2,11 +2,13 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.js";
-import crewRoutes from "./routes/crew_route.js";
 import equipmentRoutes from "./routes/equipment_routes.js";
-import maintenanceScheduleRoutes from "./routes/maintenance_schedule_route.js";
-import pitRoutes from "./routes/pit_route.js";
-import plannerRoutes from "./routes/planner_route.js";
+import dailyReportRoutes from "./routes/daily_report_routes.js";
+import weeklyPeriodsRoutes from "./routes/weekly_periods_route.js";
+import employeesRoutes from "./routes/employees_route.js";
+import weeklyScheduleRoutes from "./routes/weekly_schedule_route.js";
+import dailyAttendanceRoutes from "./routes/daily_attendance_route.js";
+import dailyEquipmentStatusRoutes from "./routes/daily_equipment_status_route.js";
 import dashboardRoutes from "./routes/dashboard_route.js";
 import shippingDashboardRoutes from "./routes/shipping_dashboard_route.js";
 import aiRecommendationRoutes from "./routes/ai_recommendation_route.js";
@@ -38,7 +40,7 @@ app.use(
       }
       return cb(new Error("Not allowed by CORS"));
     },
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     credentials: true,
   })
 );
@@ -53,27 +55,34 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 // API crew atau karyawan
-app.use("/crews", crewRoutes);
+app.use("/employees", employeesRoutes);  
 
 // API equipment atau alat berat
 app.use("/equipments", equipmentRoutes);
 
-// API maintenance schedule
-app.use("/maintenance-schedules", maintenanceScheduleRoutes);
+// API daily-report
+app.use("/daily-reports", dailyReportRoutes);
 
-// API pit
-app.use("/pits", pitRoutes);
+// API weekly-periods
+app.use("/api/weekly-periods", weeklyPeriodsRoutes);
 
-// API palnner
-app.use("/planner", plannerRoutes);
+// API weekly-schedules
+app.use("/weekly-schedules", weeklyScheduleRoutes);
+
+// API daily-attendance
+app.use("/daily-attendance", dailyAttendanceRoutes);
 
 // API ai_summary
 app.use("/ai_summary", aiSummaryRoutes);
 
 app.use("/ai_recommendation", aiRecommendationRoutes);
 
+// API daily-equipment-status
+app.use("/api/daily-equipment-status", dailyEquipmentStatusRoutes);
+
 // API blending-plan
 app.use("/dashboard", dashboardRoutes);
+
 app.use("/shipping-dashboard", shippingDashboardRoutes);
 
 app.use((err, req, res, next) => {
