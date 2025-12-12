@@ -14,10 +14,10 @@ export default defineConfig({
           __dirname,
           "src/pages/mine-planner/home/home_planner_page.html"
         ),
-        crew: resolve(
-          __dirname,
-          "src/pages/mine-planner/crew/crew_management_page.html"
-        ),
+        // crew: resolve(
+        //   __dirname,
+        //   "src/pages/mine-planner/crew/crew_management_page.html"
+        // ),
         pit: resolve(
           __dirname, "src/pages/mine-planner/pit/pit.html"
         ),
