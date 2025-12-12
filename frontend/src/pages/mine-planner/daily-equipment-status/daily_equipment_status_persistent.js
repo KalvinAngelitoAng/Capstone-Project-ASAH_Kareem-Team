@@ -1,7 +1,6 @@
 // Persistent Daily Equipment Status Management JavaScript
-const API_BASE_URL = (import.meta.env?.VITE_API_BASE_URL
-    ? `${import.meta.env.VITE_API_BASE_URL}/daily-equipment-status`
-    : "http://localhost:3000/api/daily-equipment-status");
+import { BASE_URL } from "../../utils/config";
+const API_BASE_URL = `${BASE_URL}/daily-equipment-status`;
 let equipmentList = [];
 let currentStatus = [];
 let historyData = [];

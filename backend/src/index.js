@@ -55,35 +55,35 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 // API crew atau karyawan
-app.use("/employees", employeesRoutes);  
+app.use("/api/employees", employeesRoutes);  
 
 // API equipment atau alat berat
-app.use("/equipments", equipmentRoutes);
+app.use("/api/equipments", equipmentRoutes);
 
 // API daily-report
-app.use("/daily-reports", dailyReportRoutes);
+app.use("/api/daily-reports", dailyReportRoutes);
 
 // API weekly-periods
 app.use("/api/weekly-periods", weeklyPeriodsRoutes);
 
 // API weekly-schedules
-app.use("/weekly-schedules", weeklyScheduleRoutes);
+app.use("/api/weekly-schedules", weeklyScheduleRoutes);
 
 // API daily-attendance
-app.use("/daily-attendance", dailyAttendanceRoutes);
+app.use("/api/daily-attendance", dailyAttendanceRoutes);
 
 // API ai_summary
-app.use("/ai_summary", aiSummaryRoutes);
+app.use("/api/ai_summary", aiSummaryRoutes);
 
-app.use("/ai_recommendation", aiRecommendationRoutes);
+app.use("/api/ai_recommendation", aiRecommendationRoutes);
 
 // API daily-equipment-status
 app.use("/api/daily-equipment-status", dailyEquipmentStatusRoutes);
 
 // API blending-plan
-app.use("/dashboard", dashboardRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
-app.use("/shipping-dashboard", shippingDashboardRoutes);
+app.use("/api/shipping-dashboard", shippingDashboardRoutes);
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;
