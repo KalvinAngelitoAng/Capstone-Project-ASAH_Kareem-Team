@@ -47,7 +47,7 @@ export default defineConfig({
         ),
         dailyReport: resolve(
           __dirname,
-          "src/pages/mine-planner/daily-report/daily_reports  .html"
+          "src/pages/mine-planner/daily-report/daily_reports.html"
         ),
         employees: resolve(
           __dirname,
