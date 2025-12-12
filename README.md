@@ -67,6 +67,19 @@ Capstone-Project-ASAH_Kareem-Team/
   - `npm run dev`
 - Server akan berjalan di `http://localhost:3000/` (tergantung konfigurasi `PORT`).
 
+## Konfigurasi CORS (Produksi)
+
+- Tambahkan domain frontend produksi ke environment backend:
+  - `FRONTEND_URL=https://capstone-project-asahkareem-team.vercel.app`
+- Backend akan mengizinkan origin ini (`backend/src/index.js` menggunakan daftar `FRONTEND_URL`).
+
+## Deploy Frontend (Vercel)
+
+- Set environment:
+  - `VITE_API_BASE_URL=https://<domain-backend>/api`
+- Pastikan Vercel melakukan build Vite ke `frontend/dist` (lihat `vercel.json`).
+- Akses halaman hasil build, bukan file di `src/`.
+
 ## Database
 
 - File `database/schema.sql` berisi skema `db_mining_app` (tabel `tb_roles`, `tb_users`).
@@ -105,4 +118,3 @@ Capstone-Project-ASAH_Kareem-Team/
 ## Pengembangan Bersamaan
 
 - Jalankan frontend dan backend di terminal terpisah untuk pengembangan paralel.
-

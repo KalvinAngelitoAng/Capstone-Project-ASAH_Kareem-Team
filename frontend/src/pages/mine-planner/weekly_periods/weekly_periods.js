@@ -547,3 +547,7 @@ if (document.readyState === "loading") {
 } else {
   initializePage();
 }
+
+window.loadWeeklyPeriods = loadWeeklyPeriods;
+window.editPeriod = editPeriod;
+window.deletePeriod = deletePeriod;
