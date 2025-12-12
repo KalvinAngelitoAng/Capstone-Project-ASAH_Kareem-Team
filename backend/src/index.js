@@ -55,10 +55,10 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 // API crew atau karyawan
-app.use("/employees", employeesRoutes);  
+app.use("/api/employees", employeesRoutes);  
 
 // API equipment atau alat berat
-app.use("/equipments", equipmentRoutes);
+app.use("/api/equipments", equipmentRoutes);
 
 // API daily-report
 app.use("/daily-reports", dailyReportRoutes);
