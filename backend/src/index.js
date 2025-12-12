@@ -61,7 +61,7 @@ app.use("/api/employees", employeesRoutes);
 app.use("/api/equipments", equipmentRoutes);
 
 // API daily-report
-app.use("api/daily-reports", dailyReportRoutes);
+app.use("/daily-reports", dailyReportRoutes);
 
 // API weekly-periods
 app.use("/api/weekly-periods", weeklyPeriodsRoutes);
@@ -70,12 +70,12 @@ app.use("/api/weekly-periods", weeklyPeriodsRoutes);
 app.use("api/weekly-schedules", weeklyScheduleRoutes);
 
 // API daily-attendance
-app.use("api/daily-attendance", dailyAttendanceRoutes);
+app.use("/daily-attendance", dailyAttendanceRoutes);
 
 // API ai_summary
-app.use("api/ai_summary", aiSummaryRoutes);
+app.use("/ai_summary", aiSummaryRoutes);
 
-app.use("api/ai_recommendation", aiRecommendationRoutes);
+app.use("/ai_recommendation", aiRecommendationRoutes);
 
 // API daily-equipment-status
 app.use("/api/daily-equipment-status", dailyEquipmentStatusRoutes);
