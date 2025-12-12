@@ -1,4 +1,6 @@
-const API_BASE_URL = import.meta.env?.VITE_API_BASE_URL || "http://localhost:3000/api";
+const BACKEND_ORIGIN =
+  import.meta.env?.VITE_BACKEND_ORIGIN || "http://localhost:3000";
+const API_BASE_URL = `${BACKEND_ORIGIN}/api`;
 let weeklyPeriods = [];
 
 function formatNumber(num) {
@@ -270,7 +272,6 @@ async function addPeriod() {
 
     showToast("success", "Success", "Weekly period created successfully");
 
-    
     loadWeeklyPeriods();
     return true;
   } catch (error) {
@@ -428,7 +429,6 @@ async function generateNextWeek() {
 // Logout function
 function logout() {
   if (confirm("Are you sure you want to logout?")) {
-  
     localStorage.removeItem("auth_token");
     sessionStorage.clear();
 
