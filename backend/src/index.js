@@ -55,18 +55,20 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 
 // API crew atau karyawan
-app.use("/api/employees", employeesRoutes);  
+app.use("/api/employees", employeesRoutes);
+app.use("/employees", employeesRoutes);
 
 // API equipment atau alat berat
 app.use("/api/equipments", equipmentRoutes);
 
 // API daily-report
-app.use("/api/daily-reports", dailyReportRoutes);
+app.use("/daily-reports", dailyReportRoutes);
 
 // API weekly-periods
 app.use("/api/weekly-periods", weeklyPeriodsRoutes);
 
 // API weekly-schedules
+app.use("/weekly-schedules", weeklyScheduleRoutes);
 app.use("/api/weekly-schedules", weeklyScheduleRoutes);
 
 // API daily-attendance
