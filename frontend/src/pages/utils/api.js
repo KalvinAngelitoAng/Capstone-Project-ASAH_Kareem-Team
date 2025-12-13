@@ -37,6 +37,11 @@ const ENDPOINTS = {
   // Daily Reports (BARU)
   DAILY_REPORT_LIST: `${BASE_URL}/daily-reports`,
   DAILY_REPORT_DETAIL: (idReport) => `${BASE_URL}/daily-reports/${idReport}`,
+
+  // Shipping Schedule
+  SHIPPING_SCHEDULE_LIST: `${BASE_URL}/shipping-schedules`,
+  SHIPPING_SCHEDULE_DETAIL: (id) => `${BASE_URL}/shipping-schedules/${id}`,
+  SHIPPING_SCHEDULE_STATS: `${BASE_URL}/shipping-schedules/stats`,
 };
 
 ENDPOINTS.WEEKLY_PLAN_LIST = `${BASE_URL}/weekly-plans`;
@@ -922,6 +927,16 @@ export async function getDailyAttendance(date) {
       },
     });
 
+    // Check content type
+    const contentType = res.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const text = await res.text();
+      console.error("API Error: Received non-JSON response", text);
+      throw new Error(
+        `API Error: Expected JSON but received ${contentType} (Status: ${res.status}). Server might be down or endpoint URL is wrong.`
+      );
+    }
+
     const json = await res.json();
 
     if (!res.ok) {
@@ -954,4 +969,100 @@ export async function getDailyAttendanceSummary(date) {
   if (!res.ok)
     throw new Error(json.message || "Failed to get attendance summary");
   return json;
+}
+
+/**
+ * Mengambil semua shipping schedules
+ */
+export async function getShippingSchedules() {
+  const accessToken = getAccessToken();
+  const res = await fetch(ENDPOINTS.SHIPPING_SCHEDULE_LIST, {
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+  });
+  const json = await res.json().catch(() => ({}));
+
+  return {
+    ...json,
+    ok: res.ok,
+    status: res.status,
+  };
+}
+
+/**
+ * Mengambil statistik shipping schedules
+ */
+export async function getShippingScheduleStats() {
+  const accessToken = getAccessToken();
+  const res = await fetch(ENDPOINTS.SHIPPING_SCHEDULE_STATS, {
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+  });
+  const json = await res.json().catch(() => ({}));
+
+  return {
+    ...json,
+    ok: res.ok,
+    status: res.status,
+  };
+}
+
+/**
+ * Membuat shipping schedule baru
+ */
+export async function createShippingSchedule(payload) {
+  const accessToken = getAccessToken();
+  const res = await fetch(ENDPOINTS.SHIPPING_SCHEDULE_LIST, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+    },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    throw new Error(json.message || "Failed creating shipping schedule");
+  }
+
+  return json;
+}
+
+/**
+ * Mengupdate shipping schedule
+ */
+export async function updateShippingSchedule(id, payload) {
+  const accessToken = getAccessToken();
+  const res = await fetch(ENDPOINTS.SHIPPING_SCHEDULE_DETAIL(id), {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+    },
+    body: JSON.stringify(payload),
+  });
+  const json = await res.json().catch(() => ({}));
+
+  if (!res.ok) {
+    throw new Error(json.message || "Failed updating shipping schedule");
+  }
+
+  return json;
+}
+
+/**
+ * Menghapus shipping schedule
+ */
+export async function deleteShippingSchedule(id) {
+  const accessToken = getAccessToken();
+  const res = await fetch(ENDPOINTS.SHIPPING_SCHEDULE_DETAIL(id), {
+    method: "DELETE",
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+  });
+
+  if (!res.ok) {
+    const json = await res.json().catch(() => ({}));
+    throw new Error(json.message || `Failed to delete shipping schedule ${id}`);
+  }
+
+  return { ok: true };
 }
