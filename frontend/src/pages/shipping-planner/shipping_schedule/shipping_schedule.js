@@ -160,13 +160,13 @@ function renderSchedulesTable(schedules) {
             <td class="text-end align-middle">
                 <div class="btn-group btn-group-sm" role="group">
                     <button class="btn btn-outline-primary me-1" onclick="editSchedule('${
-                      schedule.vessel_id
+                    schedule.vessel_id
                     }')">
                         <i class="bi bi-pencil"></i> Edit
                     </button>
 
                     <button class="btn btn-outline-danger" onclick="deleteSchedule('${
-                      schedule.vessel_id
+                    schedule.vessel_id
                     }')">
                         <i class="bi bi-trash"></i> Delete
                     </button>
